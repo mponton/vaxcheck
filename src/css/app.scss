@@ -1,0 +1,64 @@
+// app global css in SCSS form
+
+div.q-markdown>h1:first-of-type,
+div.q-markdown>h2:first-of-type,
+div.q-markdown>h3:first-of-type,
+div.q-markdown>h4:first-of-type,
+div.q-markdown>h5:first-of-type {
+    margin-block-start: 0;
+}
+
+#main-markdown>table {
+    font-size: 0.8em;
+}
+
+/* Uh... yeah... That's ugly and not a smooth experience */
+@media (min-aspect-ratio: 100/100) {
+/* Square or widder screen, limit video size */
+#camview {
+    text-align: center;
+}
+video {
+    width: 80vw;
+}
+#camhelp {
+    width: 80vw;
+    margin: auto;
+}
+}
+@media (min-aspect-ratio: 120/100) {
+/* Square or widder screen, limit video size */
+video {
+    width: 70vw;
+}
+#camhelp {
+    width: 70vw;
+}
+}
+@media (min-aspect-ratio: 130/100) {
+/* Square or widder screen, limit video size */
+video {
+    width: 60vw;
+}
+#camhelp {
+    width: 60vw;
+}
+}
+@media (min-aspect-ratio: 140/100) {
+/* Square or widder screen, limit video size */
+video {
+    width: 50vw;
+}
+#camhelp {
+    width: 50vw;
+}
+}
+@media (max-aspect-ratio: 100/100) {
+/* Screen taller than widder (e.g. phone), limit to width of screen */
+video {
+    width: 100vw;
+}
+#camhelp {
+    width: 100vw;
+}
+}
