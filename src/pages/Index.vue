@@ -12,7 +12,6 @@
         The camera will stop and close as soon as a QR code is read. If needed, use the
         <b><span class="text-red-10">red</span></b> button below to manually stop the camera.</p>
       </div>
-    <!-- FIXME: Add basic instructions here -->
     </div>
     <canvas v-show="false" />
     <q-file
@@ -54,17 +53,24 @@
           qrData ? qrData.statusBannerMessage : sampleQrData.statusBannerMessage
         }}
         <template v-slot:action>
-          <q-btn outline color="white" label="More Info" @click="showStatusInfo" />
+          <q-btn
+            v-if="qrData.status != 'raw'"
+            outline
+            color="white"
+            label="More Info"
+            @click="showStatusInfo"
+          />
         </template>
       </q-banner>
 
       <!-- Raw dump area -->
       <div
+        id="raw-dump"
         v-if="qrData && qrData.cardDump"
         style="overflow-x: auto; max-width: 100vw"
       >
+        <!-- The q-markdown content needs to be flush with column 0 for QMarkdown to display it correctly. -->
         <q-markdown no-line-numbers no-heading-anchor-links show-copy>
-        <!-- This content needs to be flush with column 0 for QMarkdown to display it correctly. -->
 ```{{ qrData.cardDumpFormat }}
 {{ qrData.cardDump }}
 ```
@@ -448,7 +454,7 @@ export default defineComponent({
               "Could not determine exact format of card, dumping DATA instead..."
             );
             qrData.value = {
-              status: "unknown",
+              status: "raw",
               statusBannerClass: "bg-grey-10 text-white",
               statusBannerIcon: "help_center",
               statusBannerMessage:
@@ -479,7 +485,7 @@ export default defineComponent({
           "Could not determine exact format of card from JSON data, dumping JSON instead..."
         );
         qrData.value = {
-          status: "unknown",
+          status: "raw",
           statusBannerClass: "bg-grey-10 text-white",
           statusBannerIcon: "help_center",
           statusBannerMessage:

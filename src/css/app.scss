@@ -5,60 +5,79 @@ div.q-markdown>h2:first-of-type,
 div.q-markdown>h3:first-of-type,
 div.q-markdown>h4:first-of-type,
 div.q-markdown>h5:first-of-type {
-    margin-block-start: 0;
+  margin-block-start: 0;
 }
 
 #main-markdown>table {
-    font-size: 0.8em;
+  font-size: 0.8em;
+}
+
+#raw-dump>div>div.q-markdown>pre {
+  min-height: 5.0em;
 }
 
 /* Uh... yeah... That's ugly and not a smooth experience */
 @media (min-aspect-ratio: 100/100) {
-/* Square or widder screen, limit video size */
-#camview {
+
+  /* Square or widder screen, limit video size */
+  #camview {
     text-align: center;
-}
-video {
+  }
+
+  video {
     width: 80vw;
-}
-#camhelp {
+  }
+
+  #camhelp {
     width: 80vw;
     margin: auto;
+  }
 }
-}
+
 @media (min-aspect-ratio: 120/100) {
-/* Square or widder screen, limit video size */
-video {
+
+  /* Square or widder screen, limit video size */
+  video {
     width: 70vw;
-}
-#camhelp {
+  }
+
+  #camhelp {
     width: 70vw;
+  }
 }
-}
+
 @media (min-aspect-ratio: 130/100) {
-/* Square or widder screen, limit video size */
-video {
+
+  /* Square or widder screen, limit video size */
+  video {
     width: 60vw;
-}
-#camhelp {
+  }
+
+  #camhelp {
     width: 60vw;
+  }
 }
-}
+
 @media (min-aspect-ratio: 140/100) {
-/* Square or widder screen, limit video size */
-video {
+
+  /* Square or widder screen, limit video size */
+  video {
     width: 50vw;
-}
-#camhelp {
+  }
+
+  #camhelp {
     width: 50vw;
+  }
 }
-}
+
 @media (max-aspect-ratio: 100/100) {
-/* Screen taller than widder (e.g. phone), limit to width of screen */
-video {
+
+  /* Screen taller than widder (e.g. phone), limit to width of screen */
+  video {
     width: 100vw;
-}
-#camhelp {
+  }
+
+  #camhelp {
     width: 100vw;
-}
+  }
 }
