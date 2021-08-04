@@ -4,7 +4,7 @@
     <q-layout view="Lhh lpR fff" container class="bg-white">
       <q-header class="bg-primary">
         <q-toolbar>
-          <q-toolbar-title>About</q-toolbar-title>
+          <q-toolbar-title>VaxCheck {{ version }}</q-toolbar-title>
           <q-btn flat v-close-popup round dense icon="close" />
         </q-toolbar>
       </q-header>
@@ -36,6 +36,7 @@ import { defineComponent, ref , onMounted } from "vue";
 import { useQuasar } from "quasar";
 
 import { EventBus } from 'boot/global-event-bus';
+import pkg from '../../package.json';
 import AboutMarkdown from "assets/about.markdown";
 
 export default defineComponent({
@@ -44,6 +45,7 @@ export default defineComponent({
   setup() {
     const $q = useQuasar();
 
+    const version = pkg.version;
     const about = ref(false);
     const aboutMarkdown = ref(AboutMarkdown);
     const clearButtonClass = ref("invisible");
@@ -64,6 +66,7 @@ export default defineComponent({
     })
 
     return {
+      version,
       about,
       aboutMarkdown,
       clearButtonClass,

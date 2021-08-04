@@ -1,5 +1,3 @@
-## VaxCheck v1.0.0
-
 ### Background
 
 In Quebec (Canada) we got our COVID-19 proof of vaccination QR codes starting in May 2021. At the time of writing in early August 2021 there was still no official application to decode the QR codes and there was already a lot of noise in the media about its content, privacy issues, ease of decoding and fake passes. I was curious to know the content of this QR code and how validation worked. At the same time I had a few days off and an interest in learning [Quasar](https://quasar.dev/), [Vue.JS](https://vuejs.org/) and frontend Javascript development. It was a good excuse to get my hands dirty.
