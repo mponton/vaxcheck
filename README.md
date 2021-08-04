@@ -57,6 +57,7 @@ In addition to the above, the SHC specification requires the use of a [FHIR cred
 
 * [ ] Add support for EU Digital Green Pass
 * [ ] Try to get some test data to confirm California SHC work as expected (anyone reading this from California? 😉)
+* [ ] Add/integrate with [VCI Directory](https://github.com/the-commons-project/vci-directory)
 * [ ] Identify any other countries/regions using SHC (it's easy to add support for them)
 * [ ] Look into improving scanning QR from image (current implementation is finicky and a bad experience...)
 * [ ] Translate to French using Vue's i18n

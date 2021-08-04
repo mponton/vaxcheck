@@ -27,6 +27,7 @@ On mobile you can add this web application on your home screen using on of these
 | ------- | ---------- | --------- | ------ | ---------- | ------ |
 | Canada  | Quebec     | SHC       | Yes    | 2021-07-30 | Yes    |
 | USA     | California | SHC       | Yes    | 2021-07-30 | No     |
+| USA     | Louisiana  | SHC       | No     | 2021-08-02 | No     |
 | USA     | New York   | Excelsior | No     | 2021-07-31 | Yes    |
 | France  |            | EU DGP    |        | *Planned*  |        |
 
