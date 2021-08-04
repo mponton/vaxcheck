@@ -10,6 +10,7 @@ Useful links:
     http://build.fhir.org/ig/dvci/vaccine-credential-ig/branches/main/
     http://build.fhir.org/ig/dvci/vaccine-credential-ig/branches/main/StructureDefinition-vaccination-credential-patient.html
     http://build.fhir.org/ig/dvci/vaccine-credential-ig/branches/main/StructureDefinition-vaccination-credential-immunization.html
+    https://github.com/the-commons-project/health-cards-tests
 
 */
 
@@ -175,11 +176,11 @@ export async function decodeSmartHealthCard(qrPayload) {
                 if (r.location) {
                     location = r.location.display;
                 }
-                // Although not documented, SHC sample data includes a performer.actor.display
+                // Although not documented, SHC sample data includes a performer[0].actor.display
                 // with a value of (e.g.) "ABC General Hospital" so we use it for location
                 // if location was not already determined.
-                if (!location && r.performer && r.performer.actor) {
-                    location = r.performer.actor.display;
+                if (!location && r.performer && r.performer[0].actor) {
+                    location = r.performer[0].actor.display;
                 }
                 const note = r.note ? (r.note.join ? r.note.map((n) => n.text).join("\n") : r.note) : null;
                 // As per SHC documentation, protocolApplied is not supposed to be present
