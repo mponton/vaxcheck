@@ -96,7 +96,7 @@ export const Issuers = {
                 //
                 // QC public key "stolen" from https://github.com/fproulx/shc-covid19-decoder
                 // on which I stumbled trying to find the public key(s) from the above URL.
-                // I need to ask him where the heel he got it...
+                // I need to ask him where the hell he got it...
                 {
                     "kty": "EC",
                     "kid": "QUEBEC-01",
