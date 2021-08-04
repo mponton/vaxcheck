@@ -192,11 +192,13 @@ export async function decodeSmartHealthCard(qrPayload) {
                         ? tdDisplay
                         : "Unknown";
                 }
+                // FHIR schema says this should be YYYY-MM-DD only but Quebec include midnight time as well.
+                const occDateTime = /^\d\d\d\d-\d\d-\d\dT/.test(r.occurrenceDateTime) ? r.occurrenceDateTime.split('T')[0] : r.occurrenceDateTime;
                 return {
                     location: location,
                     lotNumber: r.lotNumber,
                     note: note,
-                    occurrenceDateTime: r.occurrenceDateTime,
+                    occurrenceDateTime: occDateTime,
                     // For now we assume only one of these is present
                     vaccineCode: r.vaccineCode.coding[0],
                     // This in theory should NOT be present but it is for Quebec (for now)
