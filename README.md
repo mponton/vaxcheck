@@ -47,6 +47,165 @@ Other than this public key snag, the Quebec implementation does not seem to foll
 
 In addition to the above, the SHC specification requires the use of a [FHIR credential bundle](http://build.fhir.org/ig/dvci/vaccine-credential-ig/branches/main/StructureDefinition-vaccination-credential-bundle.html) in the payload. Quebec's implementation again (*it seems*) does not fully match what is published as they include fields that should not be there (e.g. `protocolApplied`). That said, it could be that the FHIR specifications changed since their implementation. I don't want to throw rocks at anyone here.
 
+### New York State Excelsior Pass
+
+On August 22nd I read an [article (in French)](https://ici.radio-canada.ca/nouvelle/1818113/passeport-vaccinal-risque-danger-securite-cybersecurite) written by [Nicolas De Rosa](https://twitter.com/n_de_rosa) that mentions that the NYS Excelsior pass is based on the SHC framework. I thought this was a mistake so I reached out to inform Nicolas that, from my findings, the QR code is NOT using the SHC format. In return he shared this [article](https://www.governor.ny.gov/news/governor-cuomo-announces-launch-excelsior-pass-plus-support-safe-secure-return-tourism-and) clearly saying IT IS based on the SHC framework.
+
+This left me quite puzzled so today I reached out to my US family again and asked they send me their "latest" QR codes from the Excelsior application. I tested again and my findings still show these codes are NOT readable as SHC codes. I'm not sure if NY state is working on a new still-to-be-released version of their app and codes to follow with California and Louisiana but for now, these are not SHC-compatible. Here's some technical details (simplified):
+
+* The [SHC specifications](https://spec.smarthealth.cards/#encoding-chunks-as-qr-codes) says the QR code should begin with `shc:/` followed by data encoded in `numeric` mode (e.g. `shc:/56762909524320603460292437404460<snipped for brevity>`). The Excelsior passes I have decoded so far do not follow this format and instead contain JSON data *directly*.
+* An SHC payload is JSON data that follows the [HL7 FHIR vaccine credential](http://build.fhir.org/ig/dvci/vaccine-credential-ig/branches/main/) structure and contains a JOSE header and [JSON Web Signature](https://datatracker.ietf.org/doc/html/rfc7515). The main part of the payload looks like this:
+
+```json
+{
+  "iss": "<<URL for Issuer>>",
+  "nbf": 1611160486,
+  "vc": {
+    "@context": [
+      "https://www.w3.org/2018/credentials/v1"
+    ],
+    "type": [
+      "VerifiableCredential",
+      "https://smarthealth.cards#health-card",
+      "https://smarthealth.cards#immunization",
+      "https://smarthealth.cards#covid19"
+    ],
+    "credentialSubject": {
+      "fhirVersion": "4.0.1",
+      "fhirBundle": {
+        "resourceType": "Bundle",
+        "type": "collection",
+        "entry": [
+          {
+            "fullUrl": "resource:0",
+            "resource": {
+              "resourceType": "Patient",
+              "name": [
+                {
+                  "family": "Anyperson",
+                  "given": [
+                    "Johnathan",
+                    "Biggleston III"
+                  ]
+                }
+              ],
+              "gender": "male",
+              "birthDate": "1951-01-20",
+              "address": [ {
+                  "postalCode": "12345",
+                  "country": "US"
+                } ]
+            }
+          },
+          {
+            "fullUrl": "resource:1",
+            "resource": {
+              "resourceType": "Immunization",
+              "meta": {"security": [{"code": "IAL1.2"}]},
+              "status": "completed",
+              "vaccineCode": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/sid/cvx",
+                    "code": "207"
+                  }
+                ]
+              },
+              "patient": {
+                "reference": "resource:0"
+              },
+              "occurrenceDateTime": "2021-01-01",
+              "location": {
+                "reference": "resource:3"
+              },
+              "performer": [
+                {
+                  "actor": {
+                    "display": "ABC General Hospital"
+                  }
+                }
+              ],
+              "lotNumber": "Lot #0000001"
+            }
+          },
+          {
+            "fullUrl": "resource:2",
+            "resource": {
+              "resourceType": "Immunization",
+              "status": "completed",
+              "vaccineCode": {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/sid/cvx",
+                    "code": "207"
+                  }
+                ]
+              },
+              "patient": {
+                "reference": "resource:0"
+              },
+              "occurrenceDateTime": "2021-01-29",
+              "performer": [
+                {
+                  "actor": {
+                    "display": "ABC General Hospital"
+                  }
+                }
+              ],
+              "lotNumber": "Lot #0000007"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+* The Excelsior JSON payload looks like this:
+
+```json
+{
+    "@context": [
+        "https://www.w3.org/2018/credentials/v1"
+    ],
+    "id": "did:hpass:b3a918aa1ec2b0f0d58a6ca3e7c8ebb6a631cbb2408ad5e8ecaca9fdb48ee4bf:7210026a6918e3250c1d1094636c0a89cc06468cf302bce2216e20c755d020ac#REDACTED",
+    "type": [
+        "VerifiableCredential"
+    ],
+    "issuer": "did:hpass:b3a918aa1ec2b0f0d58a6ca3e7c8ebb6a631cbb2408ad5e8ecaca9fdb48ee4bf:7210026a6918e3250c1d1094636c0a89cc06468cf302bce2216e20c755d020ac",
+    "issuanceDate": "2021-mm-ddThh:mm:ssZ",
+    "expirationDate": "2021-mm-ddThh:mm:ssZ",
+    "credentialSchema": {
+        "id": "did:hpass:b3a918aa1ec2b0f0d58a6ca3e7c8ebb6a631cbb2408ad5e8ecaca9fdb48ee4bf:7210026a6918e3250c1d1094636c0a89cc06468cf302bce2216e20c755d020ac;id=libertyhealthpass;version=0.1",
+        "type": "JsonSchemaValidator2018"
+    },
+    "credentialSubject": {
+        "display": "#24387E",
+        "passType": "COVID-19 Vaccination",
+        "subject": {
+            "birthDate": "19xx-xx-xx",
+            "name": {
+                "family": "Doe",
+                "given": "John"
+            }
+        },
+        "type": "Liberty HealthPass"
+    },
+    "proof": {
+        "created": "2021-mm-ddThh:mm:ssZ",
+        "creator": "did:hpass:b3a918aa1ec2b0f0d58a6ca3e7c8ebb6a631cbb2408ad5e8ecaca9fdb48ee4bf:7210026a6918e3250c1d1094636c0a89cc06468cf302bce2216e20c755d020ac#key-1",
+        "nonce": "806afff9-4398-41bb-a913-f106b0cfcb6b",
+        "signatureValue": "MEQCIBZK6N-N-NnQpCBY3L-kDlmp63xs8qP-q9k9YfdUgDwTAiB4h9kc7YZ2Mg7HBg1hYBCJUes1o30SLV7vkR2XMa-ZIw",
+        "type": "EcdsaSecp256r1Signature2019"
+    }
+}
+```
+
+Bottom line, I have no idea how the NY state article can claim they use the SHC framework at this time. Unless I am unaware of some technicality (that may allow them to claim that somehow) or an of new upcoming version, I don't think this is correct.
+
+If you have information on the matter feel free to reach out to me. I'm pretty curious to learn more about this.
+
 ## Thanks and Kudos
 
 * [Francois Proulx](https://github.com/fproulx) for Quebec's public key (and his project of course, although I'm glad I found it a bit late otherwise I probably never would have started this)
